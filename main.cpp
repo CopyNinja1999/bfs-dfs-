@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <stack>
 #include <algorithm>
@@ -26,20 +27,20 @@ size_t cc = 1;//count isolated components
 size_t preCounter,postCounter;
 vertice* v;//record the status
 vector<vector<int> > adj;//record the neighbours
-void printV(vertice v) {
-	size_t i = v.index;
-	size_t n = adj[i].size();
-	if (n == 0) {
-		puts("");
-		return;
-	}
-	else {
-		for (size_t j = 0; j < n; j++) {
-			cout << adj[i][j] << " ";
-		}
-		puts("");
-	}
-}
+//void printV(vertice v) {
+//	size_t i = v.index;
+//	size_t n = adj[i].size();
+//	if (n == 0) {
+//		puts("");
+//		return;
+//	}
+//	else {
+//		for (size_t j = 0; j < n; j++) {
+//			cout << adj[i][j] << " ";
+//		}
+//		puts("");
+//	}
+//}
 size_t random(int r, int b) {
 	size_t random;
 	random=(rand() % (b-r+1)) +r;//represents [r,b]
@@ -86,7 +87,7 @@ void generateD(size_t n, size_t m)
 {
 	cout << "Directed graph generated:" << endl;
 	cout << "n=" << n << " m=" << m << endl;
-	adj = vector<vector<int>>(n, vector<int>());
+	adj = vector<vector<int> >(n, vector<int>());
 	v = new vertice[n];
 	for (size_t i = 0; i < n; i++) {
 		v[i].index = i;
@@ -129,20 +130,20 @@ void generateD(size_t n, size_t m)
 
 		}
 	}
-	if (n < 25) {
-		for (size_t i = 0; i < n; i++)
-	 {
-		cout << i << ": ";
-		printV(v[i]);
+	//if (n < 25) {
+	//	for (size_t i = 0; i < n; i++)
+	// {
+	//	cout << i << ": ";
+	//	printV(v[i]);
 
-	 }
-	}
+	// }
+	//}
 
 }
 void generateU(size_t n, size_t m) {
 	cout << "Undirected graph generated:" << endl;
 	cout << "n=" << n << " m=" << m << endl;
-	adj = vector<vector<int>>(n, vector<int>());
+	adj = vector<vector<int> >(n, vector<int>());
 	v = new vertice[n];
 	for (size_t i = 0; i < n; i++) {
 		v[i].index = i;
@@ -187,14 +188,14 @@ void generateU(size_t n, size_t m) {
 
 		}
 	}
-	if (n < 25) {
-		for (size_t i = 0; i < n; i++)
-		{
-			cout << i << ": ";
-			printV(v[i]);
+	//if (n < 25) {
+	//	for (size_t i = 0; i < n; i++)
+	//	{
+	//		cout << i << ": ";
+	//		printV(v[i]);
 
-		}
-	}
+	//	}
+	//}
 
 }
 void userInterface() 
@@ -258,12 +259,12 @@ void userInterface()
 	switch (a)
 	{
 	case 1:
-		for (size_t i = 0; i < n; i++)
-		{
-			cout << i << ": ";
-			printV(v[i]);
+		//for (size_t i = 0; i < n; i++)
+		//{
+		//	cout << i << ": ";
+		//	printV(v[i]);
 
-		}
+		//}
 		break;
 	case 2:
 		break;
@@ -314,39 +315,39 @@ void dfsRecursive() //the naive implementation of directed dfs
 
 }	
 void dfsStack() {//using naive c++ stl stack
-	size_t n = adj.size(); 
-	for (size_t i = 0; i < n;i++) 
+	size_t n = adj.size();
+	for (size_t i = 0; i < n; i++)
 	{
 		v[i].visited = false;
 	}
 	stack<vertice> S;
-	for (size_t k = 0; k < n;k++) {
+	for (size_t k = 0; k < n; k++) {
 		if (v[k].visited) { continue; }
-		else	
+		else
 			v[k].visited = true;//start point v[0]
-	S.push(v[k]);
-	 while (!S.empty()) 
-	 {
-		vertice u = S.top();
-		S.pop();//these two steps represent the operation pop
-		size_t m = adj[u.index].size();
-		size_t index=NULL;
-		for (size_t j = 0; j < m; j++) 
+		S.push(v[k]);
+		while (!S.empty())
 		{
-			size_t i = adj[u.index][j];
-			if (!v[i].visited) 
+			vertice u = S.top();
+			S.pop();//these two steps represent the operation pop
+			size_t m = adj[u.index].size();
+			int  index = -1;
+			for (size_t j = 0; j < m; j++)
 			{
-				index = i;
-				break;
+				size_t i = adj[u.index][j];
+				if (!v[i].visited)
+				{
+					index = i;
+					break;
+				}
+			}
+			if (index != -1)
+			{
+				S.push(u);
+				v[index].visited = true;
+				S.push(v[index]);
 			}
 		}
-		if (!index == NULL) 
-		{
-			S.push(u);
-			v[index].visited = true;
-			S.push(v[index]);
-		}
-	 }
 	}
 
 
@@ -369,7 +370,7 @@ void dfsDeque() {
 			vertice u = D.front();
 			D.pop_front();
 			size_t m = adj[u.index].size();
-			size_t index = NULL;
+			int index = -1;
 			for (size_t j = 0; j < m; j++)
 			{
 				size_t i = adj[u.index][j];
@@ -379,7 +380,7 @@ void dfsDeque() {
 					break;
 				}
 			}
-			if (!index == NULL)
+			if (index != -1)
 			{
 				D.push_front(u);
 				v[index].visited = true;
@@ -387,8 +388,8 @@ void dfsDeque() {
 			}
 		}
 	}
-		D.~deque<vertice>();//release memory
-	
+	D.~deque<vertice>();//release memory
+
 }
 void showOrder() {
 	size_t n = adj.size();
@@ -519,8 +520,9 @@ void compareDFS() {
 }
 int main(){
 	srand((int)time(NULL));  // generate random seeds, use and only use once
-	generateD(50000,80000);	
-	//isExplored();
+	generateD(5000,8000);	
+	
 	compareDFS();
+	//isExplored();
 	return 0;
 }
