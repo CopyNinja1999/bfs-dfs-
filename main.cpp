@@ -1,5 +1,15 @@
 
+/*
+Going deeper:1.When the cache miss happened
+2.how large the size is the algorithm become ineffictive
+3.why using deque is faster
+4.the performance in HPC Cluster against the performance in desktop
+5.
+
+*/
+
 #include <iostream>
+#include <fstream>
 #include <stack>
 #include <algorithm>
 #include <vector>
@@ -41,6 +51,17 @@ vector<vector<int> > adj;//record the neighbours
 //		puts("");
 //	}
 //}
+void printD() {
+	int n = adj.size();
+	for (int i = 0; i < n;i++) {
+		int m = adj[i].size();
+		cout << i << ": ";
+		for (int j = 0; j < m; j++) { cout << adj[i][j]<<" ,"; }
+	cout << endl;
+	
+	}
+
+}
 size_t random(int r, int b) {
 	size_t random;
 	random=(rand() % (b-r+1)) +r;//represents [r,b]
@@ -482,29 +503,56 @@ void test() {
 	* n m(first line)
 	* x1 y1
 	* x2 y2
-	* â€¦
+	* ¡­
 	* xm ym
 	*/
-//void inputD(const string &filename) {
-//	fstream in(filename);
-//	string s;
-//	string a,b;
-//	std::getline(in, s);
-//	istringstream is(s);
-//	is >> a >> b;
-//	size_t n, m;
-//	std::cin >> n >> m;
-//	adj = vector<vector<int>>(n, vector<int>());
-//	v = new vertice[n];
-//	for (size_t i = 0; i < n; i++) {
-//		v[i].index = i;
-//	}
-//	for (size_t i = 0; i < m; i++) {
-//		size_t x, y;
-//		std::cin >> x >> y;
-//		adj[x - 1].push_back(y - 1);
-//	}
-//}
+int Max(size_t a, size_t b, size_t c)
+{
+	size_t max;
+	if (a >= b)
+	{
+		if (a >= c) {
+			max = a;
+		}
+		else
+			max = c;
+	}
+	else if (b >= c) { max = b; }
+	else max = c;
+	return max;
+}
+void inputD(const string &filename) {
+	fstream in(filename);
+	string s;	
+	size_t n=0, m=0;
+	string data1,data2;
+	do
+	{	std::getline(in, s);
+	istringstream is(s);
+	is >> data1 >> data2;
+	int d1 = stod(data1);
+	int d2 = stod(data2);
+	n =Max(n, d2, d1);
+	m += 1;
+	} while (!in.eof());
+	//this block will count the number of lines and calculate the maximun number appeared in the file, which is the parameter n, m(vertice edge)
+	in.seekg(0, ios::beg);
+	adj = vector<vector<int>>(n+1, vector<int>());
+	v = new vertice[n];
+	for (size_t i = 0; i < n; i++) {
+		v[i].index = i;
+	}
+	for (size_t i = 0; i < m; i++) {
+		size_t x, y;
+		std::getline(in, s);
+		istringstream is(s);
+		is >> data1 >> data2;
+		x = stod(data1);
+		y = stod(data2);
+		adj[x].push_back(y);
+	}
+	//this block will assign data into the vertice template in terms of adjancancy list
+}
 void compareDFS() {
 	clock_t t1,t2,t3;
 	t1 = clock();//get current time
@@ -519,10 +567,13 @@ void compareDFS() {
 	cout << "Deque takes " << dif2 << " ms" << endl;
 }
 int main(){
-	srand((int)time(NULL));  // generate random seeds, use and only use once
-	generateD(5000,8000);	
-	
+	//srand((int)time(NULL));  // generate random seeds, use and only use once
+	//generateD(5000,8000);	
+	inputD("out.txt");
+	printD();	
+	isExplored();
 	compareDFS();
-	//isExplored();
+
+
 	return 0;
 }
