@@ -568,11 +568,12 @@ void compareDFS() {
 	cout << "Deque takes " << dif2 << " ms" << endl;
 }
 int main(){
-	//srand((int)time(NULL));  // generate random seeds, use and only use once
-	//generateD(5000,8000);	
-	inputD("out.txt");
-	printD();	
 
+	//inputD("out.txt");
+
+	srand((int)time(NULL));  // generate random seeds, use and only use once
+	generateD(5000,8000);		
+/*	printD();*/	
 	compareDFS();
 	isExplored();
 
