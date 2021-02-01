@@ -527,24 +527,29 @@ void inputD(const string &filename) {
 	string s;	
 	size_t n=0, m=0;
 	string data1,data2;
-	do
-	{	std::getline(in, s);
+	while(true)
+	{
+
+		std::getline(in, s);
 	istringstream is(s);
 	is >> data1 >> data2;
 	int d1 = stoi(data1);
 	int d2 = stoi(data2);
 	n =Max(n, d2, d1);
 	m += 1;
-	} while (!in.eof());
+	if (in.eof()) { break; }
+	} 
+	//while (!in.eof());
 	//this block will count the number of lines and calculate the maximun number appeared in the file, which is the parameter n, m(vertice edge)
 	in.seekg(0, ios::beg);
-	adj = vector<vector<int> >(n+2, vector<int>());
-	v = new vertice[n+2];
-	for (size_t i = 0; i < n+2; i++) {
+	n += 1;
+	adj = vector<vector<int> >(n, vector<int>());
+	v = new vertice[n];
+	for (size_t i = 0; i < n; i++) {
 		v[i].index = i;
 	}
 	for (size_t i = 0; i < m; i++) {
-		size_t x, y;
+		int x, y;
 		std::getline(in, s);
 		istringstream is(s);
 		is >> data1 >> data2;
@@ -569,11 +574,11 @@ void compareDFS() {
 }
 int main(){
 
-	//inputD("out.txt");
+	inputD("out.txt");
 
-	srand((int)time(NULL));  // generate random seeds, use and only use once
-	generateD(5000,8000);		
-/*	printD();*/	
+	//srand((int)time(NULL));  // generate random seeds, use and only use once
+	//generateD(1000,5000);		
+	printD();	
 	compareDFS();
 	isExplored();
 
