@@ -51,14 +51,15 @@ vector<vector<int> > adj;//record the neighbours
 //		puts("");
 //	}
 //}
-void printD() {
+
+void Print_data() {
 	int n = adj.size();
-	for (int i = 0; i < n;i++) {
+	for (int i = 0; i < n; i++) {
 		int m = adj[i].size();
 		cout << i << ": ";
-		for (int j = 0; j < m; j++) { cout << adj[i][j]<<" ,"; }
-	cout << endl;
-	
+		for (int j = 0; j < m; j++) { cout << adj[i][j] << " ,"; }
+		cout << endl;
+
 	}
 
 }
@@ -521,44 +522,6 @@ int Max(size_t a, size_t b, size_t c)
 	else max = c;
 	return max;
 }
-void inputD(const string &filename) {
-	std::fstream in(filename.c_str());
-	cout << "reading file:" << filename << endl;
-	string s;	
-	size_t n=0, m=0;
-	string data1,data2;
-	while(true)
-	{
-
-		std::getline(in, s);
-	istringstream is(s);
-	is >> data1 >> data2;
-	int d1 = stoi(data1);
-	int d2 = stoi(data2);
-	n =Max(n, d2, d1);
-	m += 1;
-	if (in.eof()) { break; }
-	} 
-	//while (!in.eof());
-	//this block will count the number of lines and calculate the maximun number appeared in the file, which is the parameter n, m(vertice edge)
-	in.seekg(0, ios::beg);
-	n += 1;
-	adj = vector<vector<int> >(n, vector<int>());
-	v = new vertice[n];
-	for (size_t i = 0; i < n; i++) {
-		v[i].index = i;
-	}
-	for (size_t i = 0; i < m; i++) {
-		int x, y;
-		std::getline(in, s);
-		istringstream is(s);
-		is >> data1 >> data2;
-		x = stoi(data1);
-		y = stoi(data2);
-		adj[x].push_back(y);
-	}
-	//this block will assign data into the vertice template in terms of adjancancy list
-}
 void compareDFS() {
 	clock_t t1,t2,t3;
 	t1 = clock();//get current time
@@ -572,15 +535,49 @@ void compareDFS() {
 	cout << "Naive stack takes " <<dif1<<" ms" <<endl;
 	cout << "Deque takes " << dif2 << " ms" << endl;
 }
+void Input_data(const string& filename) {
+	std::fstream in(filename.c_str());
+	cout << "reading file:" << filename << endl;
+	string s;
+	size_t n = 0, m = 0;
+	string data1, data2;
+	while (true)
+	{
+		std::getline(in, s);
+		istringstream is(s);
+		is >> data1 >> data2;
+		int d1 = stoi(data1);
+		int d2 = stoi(data2);
+		n = Max(n, d2, d1);
+		m += 1;
+		if (in.eof()) { break; }
+	}
+	//this block will count the number of lines and calculate the maximun number appeared in the file, which are the parameters n, m(vertice, edge)
+	in.seekg(0, ios::beg);
+	n += 1;
+	adj = vector<vector<int> >(n, vector<int>());
+	for (size_t i = 0; i < m; i++)
+	{
+		int x, y;
+		std::getline(in, s);
+		istringstream is(s);
+		is >> data1 >> data2;
+		x = stoi(data1);
+		y = stoi(data2);
+		adj[x].push_back(y);
+	}
+	in.close();
+	//this block will assign data into the vertice template in terms of the adjancancy list
+}
 int main(){
 
-	inputD("out.txt");
+	Input_data("out.txt");
 
 	//srand((int)time(NULL));  // generate random seeds, use and only use once
 	//generateD(1000,5000);		
-	printD();	
-	compareDFS();
-	isExplored();
+	Print_data();	
+//	compareDFS();
+//	isExplored();
 
 	return 0;
 }
